@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TrxController {
 
-    private final TrxService trxService;
+    //private final TrxService trxService;
 
     @GetMapping("/")
     public List<TrxEntity> getAll() {
