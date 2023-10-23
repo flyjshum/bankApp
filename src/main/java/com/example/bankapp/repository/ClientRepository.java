@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ClientRepository extends JpaRepository<ClientEntity, Long> {
 
-    static List<ClientDto> findAllById(Long id) {
-        return null;
-    }
+   // static List<ClientDto> findAllById(Long id) {
+    //    return null;
+   // }
 }

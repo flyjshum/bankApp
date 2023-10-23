@@ -8,5 +8,7 @@ import java.util.List;
 public interface ClientService {
     List<ClientDto> getAll();
 
-    List<ClientDto> getById();
+    ClientDto getById(Long id);
+
+
 }

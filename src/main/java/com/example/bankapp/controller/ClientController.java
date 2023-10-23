@@ -6,10 +6,7 @@ import com.example.bankapp.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLOutput;
 import java.util.List;
-
-import static java.lang.System.*;
 
 @RestController
 @RequestMapping("/api/client")
@@ -29,11 +26,10 @@ public class ClientController {
         clientEntity.setFirstName("123");
         return List.of(clientEntity);// return clientService.getAll();
     }
-    @GetMapping("/search/{id}")
-    public List<ClientEntity> getById(@PathVariable Long id) {
-        ClientEntity clientEntity = new ClientEntity();
-        clientEntity.setFirstName("QQQQQ");
-        return List.of(clientEntity);// return clientService.getAll();
+    @GetMapping("/{id}")
+    public ClientDto getById(@PathVariable Long id) {
+        return clientService.getById(id);
+
     }
     @PostMapping("/")
     public ClientDto add(@RequestBody ClientDto clientDto) {
