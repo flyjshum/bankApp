@@ -1,7 +1,11 @@
 package com.example.bankapp.controller;
 
+import com.example.bankapp.dtos.ClientDto;
 import com.example.bankapp.dtos.TrxDto;
+import com.example.bankapp.entities.AccountEntity;
+import com.example.bankapp.entities.ClientEntity;
 import com.example.bankapp.entities.TrxEntity;
+import com.example.bankapp.service.TrxService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,34 +17,37 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TrxController {
 
-    //private final TrxService trxService;
+    private final TrxService trxService;
 
     @GetMapping("/")
-    public List<TrxEntity> getAll() {
-        TrxEntity trxEntity = new TrxEntity();
-        trxEntity.setAmount(123.99);
-        return List.of(trxEntity);// return clientService.getAll();
+    public List<TrxDto> getAll() {
+        List<TrxDto> trxs = trxService.getAll();
+        return trxs;
+    }
+    @GetMapping("/search")
+    public List<TrxDto> getByAccountId(@RequestParam Long id) {
+        return trxService.findByAccountId(id);
     }
 
-    @GetMapping("/search")
-    public List<TrxEntity> getByDate(@RequestParam Date created_at) {
-        TrxEntity trxEntity = new TrxEntity();
-        trxEntity.setDescription(122);
-        return List.of(trxEntity);// return clientService.getAll();
+    @GetMapping("/{id}")
+    public TrxDto getById(@PathVariable Long id) {
+        return trxService.getById(id);
     }
 
     @PostMapping("/")
     public TrxDto add(@RequestBody TrxDto trxDto) {
-        System.out.println(trxDto.getDescription());
-        return null;
+        return trxService.createTrx(trxDto);
     }
 
     @PutMapping("/{id}")
-    public TrxDto update(@PathVariable Long id, @RequestBody TrxDto trxDto) {
-        return null;
+    public TrxEntity update(@PathVariable Long id, @RequestBody TrxDto trxDto) {
+        return trxService.updateTrx(id, trxDto);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
+        trxService.deleteTrx(id);
     }
+
+
 }

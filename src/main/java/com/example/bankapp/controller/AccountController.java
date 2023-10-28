@@ -2,8 +2,10 @@ package com.example.bankapp.controller;
 
 import com.example.bankapp.dtos.AccountDto;
 
+import com.example.bankapp.dtos.ClientDto;
 import com.example.bankapp.entities.AccountEntity;
 
+import com.example.bankapp.entities.ClientEntity;
 import com.example.bankapp.service.AccountService;
 
 import lombok.RequiredArgsConstructor;
@@ -18,35 +20,39 @@ public class AccountController {
     private final AccountService accountService;
 
     @GetMapping("/")
-    public List<AccountEntity> getAll() {
-        AccountEntity accountEntity = new AccountEntity();
-        accountEntity.setName("Vklad");
-        // accountEntity.setClient(12233);  не получилось, ошибка из-за типа
-        return List.of(accountEntity);
+    public List<AccountDto> getAll() {
+        List<AccountDto> accounts = accountService.getAll();
+        return accounts;
     }
 
-
     @GetMapping("/search")
-    public List<AccountEntity> getByName(@RequestParam String name) {
-        AccountEntity accountEntity = new AccountEntity();
-        accountEntity.setName("Вклад 1");
-        return List.of(accountEntity);
+    public List<AccountDto> getByName(@RequestParam String name) {
+        return accountService.findByName(name);
+    }
+
+    @GetMapping("/{id}")
+    public AccountDto getById(@PathVariable Long id) {
+        return accountService.getById(id);
     }
 
     @PostMapping("/")
     public AccountDto add(@RequestBody AccountDto accountDto) {
-        System.out.println(accountDto.getName());
-        return null;
+        return accountService.createAccount(accountDto);
     }
 
     @PutMapping("/{client_id}")
-    public AccountDto update(@PathVariable Long id, @RequestBody AccountDto accountDto) {
-        return null;
+    public AccountEntity update(@PathVariable Long id, @RequestBody AccountDto accountDto) {
+
+        return accountService.updateAccount(id, accountDto);
     }
 
     //наверное нельзя удалять счета.. статус будет меняться на неактивный
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
+        accountService.deleteAccount(id);
     }
+
+
 }
 

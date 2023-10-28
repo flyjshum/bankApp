@@ -19,8 +19,8 @@ public class AccountEntity {
     @JoinColumn(name = "client_id")
     private ClientEntity client;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    private AgreementEntity agreement;
+    //@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    //private AgreementEntity agreement;
 
     @Column (name ="name")
     private String name;
