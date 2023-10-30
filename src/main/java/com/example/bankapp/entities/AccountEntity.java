@@ -1,10 +1,13 @@
 package com.example.bankapp.entities;
 
 import jakarta.persistence.*;
+import java.time.Instant;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Getter
 @Setter
@@ -19,8 +22,8 @@ public class AccountEntity {
     @JoinColumn(name = "client_id")
     private ClientEntity client;
 
-    //@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    //private AgreementEntity agreement;
+//    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+//    private AgreementEntity agreement;
 
     @Column (name ="name")
     private String name;
@@ -37,9 +40,11 @@ public class AccountEntity {
     @Column (name ="currency_code")
     private int currencyCode;
 
+    @CreationTimestamp
     @Column (name ="created_at")
-    private Date createdAt;
+    private Instant createdAt;
 
+    @UpdateTimestamp
     @Column (name ="updated_at")
     private Date updatedAt;
 }

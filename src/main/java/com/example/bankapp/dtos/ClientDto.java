@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import org.springframework.validation.annotation.Validated;
+
 @Getter
 @Setter
 public class ClientDto {

@@ -15,8 +15,7 @@ public class AccountDto {
     private int status;
     private double balance;
     private int currencyCode;
-    private Date createdAt;
-    private Date updatedAt;
+
 
 
 }

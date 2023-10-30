@@ -1,5 +1,6 @@
 package com.example.bankapp.controller;
 
+import com.example.bankapp.dtos.AccountAggrementDto;
 import com.example.bankapp.dtos.AccountDto;
 
 import com.example.bankapp.dtos.ClientDto;
@@ -21,8 +22,7 @@ public class AccountController {
 
     @GetMapping("/")
     public List<AccountDto> getAll() {
-        List<AccountDto> accounts = accountService.getAll();
-        return accounts;
+        return accountService.getAll();
     }
 
     @GetMapping("/search")
@@ -36,14 +36,14 @@ public class AccountController {
     }
 
     @PostMapping("/")
-    public AccountDto add(@RequestBody AccountDto accountDto) {
-        return accountService.createAccount(accountDto);
+    public AccountDto add(@RequestBody AccountAggrementDto accountAggrementDto) {
+        return accountService.createAccount(accountAggrementDto);
     }
 
     @PutMapping("/{client_id}")
-    public AccountEntity update(@PathVariable Long id, @RequestBody AccountDto accountDto) {
+    public AccountEntity update(@PathVariable Long client_id, @RequestBody AccountDto accountDto) {
 
-        return accountService.updateAccount(id, accountDto);
+        return accountService.updateAccount(client_id, accountDto);
     }
 
     //наверное нельзя удалять счета.. статус будет меняться на неактивный

@@ -4,6 +4,7 @@ import com.example.bankapp.dtos.ClientDto;
 import com.example.bankapp.entities.ClientEntity;
 import com.example.bankapp.service.ClientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
