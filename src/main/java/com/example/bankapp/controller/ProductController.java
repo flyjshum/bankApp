@@ -1,5 +1,7 @@
 package com.example.bankapp.controller;
+import com.example.bankapp.dtos.ClientDto;
 import com.example.bankapp.dtos.ProductDto;
+import com.example.bankapp.entities.ClientEntity;
 import com.example.bankapp.entities.ProductEntity;
 import com.example.bankapp.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -19,26 +21,30 @@ public class ProductController {
         List<ProductDto> products = productService.getAll();
         return products;
     }
-
     @GetMapping("/search")
-    public List<ProductEntity> getByName(@RequestParam String name) {
-        ProductEntity productEntity = new ProductEntity();
-        productEntity.setName("Vklad");
-        return List.of(productEntity);
+    public List<ProductDto> getByName(@RequestParam String name) {
+        return productService.findByName(name);
+    }
+
+    @GetMapping("/{id}")
+    public ProductDto getById(@PathVariable Long id) {
+        return productService.getById(id);
     }
 
     @PostMapping("/")
     public ProductDto add(@RequestBody ProductDto productDto) {
-        System.out.println(productDto.getName());
-        return null;
+        return productService.createProduct(productDto);
     }
 
     @PutMapping("/{id}")
-    public ProductDto update(@PathVariable Long id, @RequestBody ProductDto productDto) {
-        return null;
+    public ProductEntity update(@PathVariable Long id, @RequestBody ProductDto productDto) {
+        return productService.updateProduct(id, productDto);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
+        productService.deleteProduct(id);
     }
+
+
 }

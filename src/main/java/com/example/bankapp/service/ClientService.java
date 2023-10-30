@@ -10,5 +10,15 @@ public interface ClientService {
 
     ClientDto getById(Long id);
 
+    // ClientDto getByEmail(String email);
+
+    List<ClientDto> findByLastName(String lastName);
+
+    ClientDto createClient(ClientDto clientDto);
+
+    ClientEntity updateClient(Long id, ClientDto clientDto);
+
+    void deleteClient(Long id);
+
 
 }

@@ -1,5 +1,6 @@
 package com.example.bankapp.controller;
 
+import com.example.bankapp.dtos.AgreementDto;
 import com.example.bankapp.dtos.ClientDto;
 import com.example.bankapp.entities.AgreementEntity;
 import com.example.bankapp.entities.ClientEntity;
@@ -17,32 +18,29 @@ public class AgreementController {
     private final AgreementService agreementService;
 
     @GetMapping("/")
-    public List<AgreementEntity> getAll() {
-        AgreementEntity agreementEntity = new AgreementEntity();
-        agreementEntity.setInterestRate(88);
-        return List.of(agreementEntity);// return clientService.getAll();
+    public List<AgreementDto> getAll() {
+        List<AgreementDto> agreements = agreementService.getAll();
+        return agreements;
     }
 
     @GetMapping("/search")
-    public List<AgreementEntity> getByClientId(@RequestParam Integer clientId) {
-        // а если мы хотим искать по фамилии клиента, как это сделать?
-        AgreementEntity agreementEntity = new AgreementEntity();
-        agreementEntity.setStatus(1);
-        return List.of(agreementEntity);// return clientService.getAll();
+    public List<AgreementDto> getByClientId(@RequestParam Long id) {
+        return agreementService.findByClientId(id);
     }
 
     @PostMapping("/")
-    public ClientDto add(@RequestBody ClientDto clientDto) {
-        System.out.println(clientDto.getFirstName());
-        return null;
+    public AgreementDto add(@RequestBody AgreementDto agreementDto) {
+        return agreementService.createAgreement(agreementDto);
     }
 
     @PutMapping("/{id}")
-    public ClientDto update(@PathVariable Long id, @RequestBody ClientDto clientDto) {
-        return null;
+    public AgreementEntity update(@PathVariable Long id, @RequestBody AgreementDto agreementDto) {
+        return agreementService.updateAgreement(id, agreementDto);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
+        agreementService.deleteAgreement(id);
     }
+
 }

@@ -21,28 +21,27 @@ public class ClientController {
     }
 
     @GetMapping("/search")
-    public List<ClientEntity> getByFirstName(@RequestParam String firstName) {
-        ClientEntity clientEntity = new ClientEntity();
-        clientEntity.setFirstName("123");
-        return List.of(clientEntity);// return clientService.getAll();
+    public List<ClientDto> getByLastName(@RequestParam String lastName) {
+        return clientService.findByLastName(lastName);
     }
+
     @GetMapping("/{id}")
     public ClientDto getById(@PathVariable Long id) {
         return clientService.getById(id);
-
     }
+
     @PostMapping("/")
     public ClientDto add(@RequestBody ClientDto clientDto) {
-        System.out.println(clientDto.getFirstName());
-        return null;
+        return clientService.createClient(clientDto);
     }
 
     @PutMapping("/{id}")
-    public ClientDto update(@PathVariable Long id, @RequestBody ClientDto clientDto) {
-        return null;
+    public ClientEntity update(@PathVariable Long id, @RequestBody ClientDto clientDto) {
+        return clientService.updateClient(id, clientDto);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
+        clientService.deleteClient(id);
     }
 }
