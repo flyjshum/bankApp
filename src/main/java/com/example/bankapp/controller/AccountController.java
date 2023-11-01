@@ -40,7 +40,7 @@ public class AccountController {
         return accountService.createAccount(accountDto);
     }
 
-    @PutMapping("/{client_id}")
+    @PutMapping("/{id}")
     public AccountEntity update(@PathVariable Long id, @RequestBody AccountDto accountDto) {
 
         return accountService.updateAccount(id, accountDto);
