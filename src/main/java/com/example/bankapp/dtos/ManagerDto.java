@@ -16,7 +16,5 @@ public class ManagerDto {
     private String firstName;
     private String lastName;
     private int status;
-    private Date createdAt;
-    private Date updatedAt;
 
 }

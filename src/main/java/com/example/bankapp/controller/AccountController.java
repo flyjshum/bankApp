@@ -1,5 +1,6 @@
 package com.example.bankapp.controller;
 
+import com.example.bankapp.dtos.AccountAgreementDto;
 import com.example.bankapp.dtos.AccountDto;
 
 import com.example.bankapp.dtos.ClientDto;
@@ -36,8 +37,8 @@ public class AccountController {
     }
 
     @PostMapping("/")
-    public AccountDto add(@RequestBody AccountDto accountDto) {
-        return accountService.createAccount(accountDto);
+    public AccountDto add(@RequestBody AccountAgreementDto accountAgreementDto) {
+        return accountService.createAccount(accountAgreementDto);
     }
 
     @PutMapping("/{id}")
@@ -45,6 +46,7 @@ public class AccountController {
 
         return accountService.updateAccount(id, accountDto);
     }
+
 
     //наверное нельзя удалять счета.. статус будет меняться на неактивный
 

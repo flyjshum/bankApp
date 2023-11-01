@@ -13,5 +13,4 @@ public class TrxDto {
     private int status;
     private double amount;
     private String description;
-    private Date createdAt;
 }

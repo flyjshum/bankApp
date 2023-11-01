@@ -13,6 +13,5 @@ public class ProductDto {
     private int currencyCode;
     private int interestRate;
     private double limit;
-    private Date createdAt;
-    private Date updatedAt;
+
 }

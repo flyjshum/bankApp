@@ -3,7 +3,10 @@ package com.example.bankapp.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.Instant;
 import java.util.Date;
 
 @Getter
@@ -24,9 +27,11 @@ public class ManagerEntity {
     @Column(name = "status")
     private int status;
 
-    @Column(name = "created_at")
-    private Date createdAt;
+    @CreationTimestamp
+    @Column (name ="created_at")
+    private Instant createdAt;
 
-    @Column(name = "updated_at")
+    @UpdateTimestamp
+    @Column (name ="updated_at")
     private Date updatedAt;
 }

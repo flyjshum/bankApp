@@ -3,8 +3,10 @@ package com.example.bankapp.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -35,7 +37,8 @@ public class TrxEntity {
     @Column (name ="description")
     private int description;
 
+    @CreationTimestamp
     @Column (name ="created_at")
-    private Date createdAt;
+    private Instant createdAt;
 
 }
