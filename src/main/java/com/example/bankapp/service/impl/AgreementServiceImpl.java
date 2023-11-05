@@ -1,18 +1,19 @@
 package com.example.bankapp.service.impl;
 
+import com.example.bankapp.dtos.AccountAgreementDto;
+import com.example.bankapp.dtos.AccountDto;
 import com.example.bankapp.dtos.AgreementDto;
 import com.example.bankapp.dtos.ClientDto;
 import com.example.bankapp.entities.*;
 import com.example.bankapp.exception.NotFoundException;
 import com.example.bankapp.exception.ValidationException;
-import com.example.bankapp.mappers.AgreementMapper;
-import com.example.bankapp.mappers.ClientMapper;
-import com.example.bankapp.repository.AgreementRepository;
-import com.example.bankapp.repository.ClientRepository;
+import com.example.bankapp.mappers.*;
+import com.example.bankapp.repository.*;
 import com.example.bankapp.service.AgreementService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +24,15 @@ import java.util.Optional;
 public class AgreementServiceImpl implements AgreementService {
     private final AgreementRepository agreementRepository;
     private final AgreementMapper agreementMapper;
+    private final AccountRepository accountRepository;
+    private final AccountMapper accountMapper;
+    private final ClientRepository clientRepository;
+    private final ClientMapper clientMapper;
+    private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
+    private final ManagerRepository managerRepository;
+    private final ManagerMapper managerMapper;
+
 
     @Override
     public List<AgreementDto> getAll() {
@@ -44,15 +54,15 @@ public class AgreementServiceImpl implements AgreementService {
 
     @Override
     public List<AgreementDto> findByClientId(Long id) {
-            List<AgreementEntity> agreementEntities = agreementRepository.findByClientId(id);
-            if (agreementEntities.isEmpty()) {
-                log.info("There is no Agreement for client id ={}", id);
-                throw new NotFoundException("Agreement for client id doesn't exist");
-            } else {
-                return agreementEntities.stream()
-                        .map(agreementMapper::toDto)
-                        .toList();
-            }
+        List<AgreementEntity> agreementEntities = agreementRepository.findByClientId(id);
+        if (agreementEntities.isEmpty()) {
+            log.info("There is no Agreement for client id ={}", id);
+            throw new NotFoundException("Agreement for client id doesn't exist");
+        } else {
+            return agreementEntities.stream()
+                    .map(agreementMapper::toDto)
+                    .toList();
+        }
     }
 
     @Override
@@ -85,8 +95,8 @@ public class AgreementServiceImpl implements AgreementService {
     public List<AgreementDto> findByManagerId(Long id) {
         List<AgreementEntity> agreementEntities = agreementRepository.findByManagerId(id);
         if (agreementEntities.isEmpty()) {
-            log.info("There are no Agreements with this manager id ={}", id);
-            throw new NotFoundException("Agreements for manager id don't exist");
+            throw new NotFoundException("There are no Agreements with this manager id"
+                    + id);
         } else {
             return agreementEntities.stream()
                     .map(agreementMapper::toDto)
@@ -94,19 +104,59 @@ public class AgreementServiceImpl implements AgreementService {
         }
     }
 
-    @Override
+    ///  @Override
     //тот же вопрос про логику создания договора -> счета
     //какой if else должен быть
-    public AgreementDto createAgreement(AgreementDto agreementDto) {
-       // Optional<AgreementEntity> optAgreementEntity = agreementRepository.getById(agreementDto.getId());
-      //  if (optAgreementEntity.isEmpty()) {
-            AgreementEntity savedAgreement = agreementRepository.save(agreementMapper.toEntity(agreementDto));
-            log.info("Created and saved Agreement with ID= {}", savedAgreement.getId());
-            return agreementMapper.toDto(savedAgreement);
+    /// public AgreementDto createAgreement(AgreementDto agreementDto) {
+    // Optional<AgreementEntity> optAgreementEntity = agreementRepository.getById(agreementDto.getId());
+    //  if (optAgreementEntity.isEmpty()) {
+    ///     AgreementEntity savedAgreement = agreementRepository.save(agreementMapper.toEntity(agreementDto));
+    ///    log.info("Created and saved Agreement with ID= {}", savedAgreement.getId());
+    ///   return agreementMapper.toDto(savedAgreement);
     //    } else {
     //        log.info("");
     //        throw new ValidationException("Agreement cannot be created");
     //    }
+    /// }
+    @Transactional
+    public AgreementDto createAgreement(AccountAgreementDto accountAgreementDto) {
+//clientId V
+// accountId V
+// productId ManagerId
+// InterestRate Status Sum
+        AccountEntity accountEntity = accountMapper.toEntity(accountAgreementDto.getAccount());
+        Optional<ClientEntity> optClientEntity = clientRepository.findById(accountAgreementDto.getAccount().getClientId());
+        accountEntity.setClient(optClientEntity.get());
+        AccountEntity savedAccountEntity = accountRepository.saveAndFlush(accountEntity);
+        AgreementEntity agreementEntity = agreementMapper.toEntity(accountAgreementDto.getAgreement());
+        agreementEntity.setAccount(savedAccountEntity);
+       // AgreementEntity savedAgreementEntity = agreementRepository.saveAndFlush(agreementEntity);
+
+        // тут я задаю id product
+        ProductEntity productEntity = productMapper.toEntity(accountAgreementDto.getProduct());
+        Optional<ProductEntity> optProductEntity = productRepository.findById(accountAgreementDto.getAgreement().getProductId());
+        agreementEntity.setProduct(optProductEntity.get());
+       // AgreementEntity savedProductInAgreementEntity = agreementRepository.saveAndFlush(agreementEntity);
+
+
+        // тут я задаю id manager
+        ManagerEntity managerEntity = managerMapper.toEntity(accountAgreementDto.getManager());
+        Optional<ManagerEntity> optManagerEntity = managerRepository.findById(accountAgreementDto.getAgreement().getManagerId());
+        agreementEntity.setManager(optManagerEntity.get());
+
+        // status
+        agreementEntity.setStatus(1);
+
+        //interestRate из таблицы продуктов
+        int interestRate = accountAgreementDto.getProduct().getInterestRate();
+        agreementEntity.setInterestRate(interestRate);
+
+
+        //не понятно что с sum. из Аккаунт Агримент Дто ее мапить? тогда какой маппер использовать?
+
+        AgreementEntity savedAgreementEntity = agreementRepository.saveAndFlush(agreementEntity);
+
+        return agreementMapper.toDto(agreementEntity);
     }
 
     @Override
@@ -119,9 +169,7 @@ public class AgreementServiceImpl implements AgreementService {
             log.info("Agreement with ID {} is updated", id);
             return clientEntity;
         }
-
-        log.info("This id = {} is not found", id);
-        throw new NotFoundException("Agreement cannot be updated, id is not found");
+        throw new NotFoundException("Agreement cannot be updated," + id + "is not found");
 
     }
 
@@ -135,8 +183,8 @@ public class AgreementServiceImpl implements AgreementService {
             log.info("Agreement id ={} is deleted", id);
             return;
         }
-        log.info("Agreement id ={} is not found", id);
-        throw new NotFoundException("Agreement not found");
+        throw new NotFoundException("Agreement cannot be deleted," + id + "is not found");
+
     }
 
 

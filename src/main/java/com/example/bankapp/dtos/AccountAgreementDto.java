@@ -10,9 +10,11 @@ import lombok.Setter;
 public class AccountAgreementDto {
 
     private AgreementDto agreement;
-
     private AccountDto account;
-
+    private ClientDto client;
+    private ManagerDto manager;
+    private ProductDto product;
+    private AgreementDto sum;
 }
 
 

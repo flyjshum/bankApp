@@ -1,5 +1,6 @@
 package com.example.bankapp.service;
 
+import com.example.bankapp.dtos.AccountAgreementDto;
 import com.example.bankapp.dtos.AgreementDto;
 import com.example.bankapp.dtos.ClientDto;
 import com.example.bankapp.entities.*;
@@ -15,7 +16,7 @@ public interface AgreementService {
     List<AgreementDto> findByProductId(Long id);
     List<AgreementDto> findByManagerId(Long id);
 
-    AgreementDto createAgreement(AgreementDto agreementDto);
+    AgreementDto createAgreement(AccountAgreementDto accountAgreementDto);
 
     AgreementEntity updateAgreement(Long id, AgreementDto agreementDto);
 

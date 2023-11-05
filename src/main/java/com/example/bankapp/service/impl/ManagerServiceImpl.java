@@ -1,4 +1,5 @@
 package com.example.bankapp.service.impl;
+
 import com.example.bankapp.dtos.ClientDto;
 import com.example.bankapp.dtos.ManagerDto;
 import com.example.bankapp.entities.ClientEntity;
@@ -56,15 +57,9 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public ManagerDto createManager(ManagerDto managerDto) {
-      //  Optional<ManagerEntity> optManagerEntity = managerRepository.getByEmail(managerDto.getEmail());
-     //   if (optManagerEntity.isEmpty()) {
-            ManagerEntity savedManager = managerRepository.save(managerMapper.toEntity(managerDto));
-            log.info("Created and saved client with ID= {}", savedManager.getId());
-            return managerMapper.toDto(savedManager);
-     //   } else {
-     //       log.info("This email = {} is already occupied", managerDto.getEmail());
-     //       throw new ValidationException("Manager cannot be created, email is occupied");
-     //   }
+        ManagerEntity savedManager = managerRepository.save(managerMapper.toEntity(managerDto));
+        log.info("Created and saved client with ID= {}", savedManager.getId());
+        return managerMapper.toDto(savedManager);
     }
 
     @Override
@@ -77,10 +72,8 @@ public class ManagerServiceImpl implements ManagerService {
             log.info("Manager with ID {} is updated", id);
             return managerEntity;
         }
-
-        log.info("This id = {} is not found", id);
-        throw new NotFoundException("Manager cannot be updated, id is not found");
-
+        throw new NotFoundException("Manager " + id + "cannot be updated, " +
+                "id is not found");
     }
 
     @Override
@@ -90,11 +83,8 @@ public class ManagerServiceImpl implements ManagerService {
             managerRepository.deleteById(id);
             return;
         }
-        log.info("Manager id ={} is not found", id);
-        throw new NotFoundException("Manager not found");
+        throw new NotFoundException("Manager " + id + "not found");
     }
-
-
 
 }
 

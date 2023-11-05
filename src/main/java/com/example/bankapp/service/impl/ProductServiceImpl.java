@@ -41,8 +41,7 @@ public class ProductServiceImpl implements ProductService {
         if (optProductEntity.isPresent()) {
             return productMapper.toDto(optProductEntity.get());
         } else {
-            log.info("Product id ={} is not found", id);
-            throw new NotFoundException("Product not found");
+            throw new NotFoundException("Product " + id + " is not found");
         }
     }
 
@@ -50,8 +49,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDto> findByName(String name) {
         List<ProductEntity> productEntities = productRepository.findByName(name);
         if (productEntities.isEmpty()) {
-            log.info("Product with name ={} is not found", name);
-            throw new NotFoundException("Product with this name is not found");
+            throw new NotFoundException("Product with name" + name + " is not found");
         } else {
             return productEntities.stream()
                     .map(productMapper::toDto)
@@ -61,9 +59,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto createProduct(ProductDto clientDto) {
-            ProductEntity savedClient = productRepository.save(productMapper.toEntity(clientDto));
-            log.info("Created and saved client with ID= {}", savedClient.getId());
-            return productMapper.toDto(savedClient);
+        ProductEntity savedClient = productRepository.save(productMapper.toEntity(clientDto));
+        log.info("Created and saved client with ID= {}", savedClient.getId());
+        return productMapper.toDto(savedClient);
     }
 
     @Override
@@ -76,9 +74,7 @@ public class ProductServiceImpl implements ProductService {
             log.info("Product with ID {} is updated", id);
             return productEntity;
         }
-
-        log.info("This id = {} is not found", id);
-        throw new NotFoundException("Product cannot be updated, id is not found");
+        throw new NotFoundException("Product cannot be updated, " + id + " is not found");
 
     }
 
@@ -89,8 +85,6 @@ public class ProductServiceImpl implements ProductService {
             productRepository.deleteById(id);
             return;
         }
-        log.info("Product id ={} is not found", id);
-        throw new NotFoundException("Product not found");
+        throw new NotFoundException("Product " + id + " is not found");
     }
-
 }

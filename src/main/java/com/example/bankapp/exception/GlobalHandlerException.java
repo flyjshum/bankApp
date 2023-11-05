@@ -13,13 +13,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
         @ExceptionHandler({NotFoundException.class})
         public ResponseEntity<Object> handleEntityNotFoundException(Exception ex) {
-            log.error("hello? sorry your entity not found: 404 {}", ex.getMessage());
+            log.error("Error 404 {}", ex.getMessage());
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
         }
 
         @ExceptionHandler({ValidationException.class})
         public ResponseEntity<Object> handleEntityValidationException(Exception ex) {
-            log.error("hello? sorry your entity not found: 404 {}", ex.getMessage());
+            log.error("Error 404 {}", ex.getMessage());
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
 

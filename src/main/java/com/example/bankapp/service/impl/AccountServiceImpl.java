@@ -33,6 +33,7 @@ public class AccountServiceImpl implements AccountService {
     private final AgreementMapper agreementMapper;
     private final ClientRepository clientRepository;
     private final ClientMapper clientMapper;
+
     @Override
     public List<AccountDto> getAll() {
         return accountRepository.findAll().stream()
@@ -46,8 +47,7 @@ public class AccountServiceImpl implements AccountService {
         if (optAccountEntity.isPresent()) {
             return accountMapper.toDto(optAccountEntity.get());
         } else {
-            log.info("Account id ={} is not found", id);
-            throw new NotFoundException("Account not found");
+            throw new NotFoundException("Account id = " + id + " is not found");
         }
     }
 
@@ -55,8 +55,7 @@ public class AccountServiceImpl implements AccountService {
     public List<AccountDto> findByName(String name) {
         List<AccountEntity> accountEntities = accountRepository.findByName(name);
         if (accountEntities.isEmpty()) {
-            log.info("Account with name ={} is not found", name);
-            throw new NotFoundException("Account with this with name is not found");
+            throw new NotFoundException("Account with name = " + name + " is not found");
         } else {
             return accountEntities.stream()
                     .map(accountMapper::toDto)
@@ -64,11 +63,11 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-   // @Override   // для одного клиента можно создать несколько аккаунтов,
+    // @Override   // для одного клиента можно создать несколько аккаунтов,
     // не понятно какие if else создать
     //может по договору? если есть договор то автоматом должен создаваться счет
 
-   // public AccountDto createAccount(AccountDto accountDto) {
+    // public AccountDto createAccount(AccountDto accountDto) {
 //        Optional<AccountEntity> optAccountEntity = accountRepository.getByClientId(accountDto.getClientId());
 //        if (optAccountEntity.isEmpty()) {
 //            AccountEntity savedAccount = accountRepository.save(accountMapper.toEntity(accountDto));
@@ -79,21 +78,20 @@ public class AccountServiceImpl implements AccountService {
 //            throw new ValidationException("");
 //        }
 //    }
-   @Transactional
-   public AccountDto createAccount(AccountAgreementDto accountAgreementDto) {
+    @Transactional
+    public AccountDto createAccount(AccountAgreementDto accountAgreementDto) {
 
-       AccountEntity accountEntity = accountMapper.toEntity(accountAgreementDto.getAccount());
-       Optional<ClientEntity> optClientEntity = clientRepository.findById(accountAgreementDto.getAccount().getClientId());
-       accountEntity.setClient(optClientEntity.get());
-       AccountEntity savedAccountEntity = accountRepository.saveAndFlush(accountEntity);
+        AccountEntity accountEntity = accountMapper.toEntity(accountAgreementDto.getAccount());
+        Optional<ClientEntity> optClientEntity = clientRepository.findById(accountAgreementDto.getAccount().getClientId());
+        accountEntity.setClient(optClientEntity.get());
+        AccountEntity savedAccountEntity = accountRepository.saveAndFlush(accountEntity);
+        AgreementEntity agreementEntity = agreementMapper.toEntity(accountAgreementDto.getAgreement());
+        agreementEntity.setAccount(savedAccountEntity);
+        agreementRepository.saveAndFlush(agreementEntity);
+        return accountMapper.toDto(accountEntity);
+    }
 
-       AgreementEntity agreementEntity = agreementMapper.toEntity(accountAgreementDto.getAgreement());
-       agreementEntity.setAccount(savedAccountEntity);
-       agreementRepository.saveAndFlush(agreementEntity);
-       return null;
-   }
-
-       @Override
+    @Override
     public AccountEntity updateAccount(Long id, AccountDto accountDto) {
         Optional<AccountEntity> optAccountEntity = accountRepository.findById(id);
         if (optAccountEntity.isPresent()) {
@@ -103,9 +101,7 @@ public class AccountServiceImpl implements AccountService {
             log.info("Account with ID {} is updated", id);
             return accountEntity;
         }
-
-        log.info("This id = {} is not found", id);
-        throw new NotFoundException("Account cannot be updated, id is not found");
+        throw new NotFoundException("Account id = " + id + " ,cannot be updated, id is not found");
 
     }
 
@@ -116,8 +112,8 @@ public class AccountServiceImpl implements AccountService {
             accountRepository.deleteById(id);
             return;
         }
-        log.info("Account id ={} is not found", id);
-        throw new NotFoundException("Account not found");
+        throw new NotFoundException("Account id = " + id + " is not found");
+
     }
 
 }
