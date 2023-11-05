@@ -1,5 +1,6 @@
 package com.example.bankapp.service;
 
+import com.example.bankapp.dtos.AccountAgreementDto;
 import com.example.bankapp.dtos.AccountDto;
 import com.example.bankapp.dtos.ClientDto;
 import com.example.bankapp.entities.AccountEntity;
@@ -14,7 +15,9 @@ public interface AccountService {
 
     List<AccountDto> findByName(String name);
 
-    AccountDto createAccount(AccountDto accountDto);
+
+    AccountDto createAccount(AccountAgreementDto accountAgreementDto);
+
 
     AccountEntity updateAccount(Long id, AccountDto accountDto);
 

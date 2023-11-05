@@ -1,5 +1,6 @@
 package com.example.bankapp.controller;
 
+import com.example.bankapp.dtos.AccountAgreementDto;
 import com.example.bankapp.dtos.AgreementDto;
 import com.example.bankapp.dtos.ClientDto;
 import com.example.bankapp.entities.AgreementEntity;
@@ -29,8 +30,8 @@ public class AgreementController {
     }
 
     @PostMapping("/")
-    public AgreementDto add(@RequestBody AgreementDto agreementDto) {
-        return agreementService.createAgreement(agreementDto);
+    public AgreementDto add(@RequestBody AccountAgreementDto accountAgreementDto) {
+        return agreementService.createAgreement(accountAgreementDto);
     }
 
     @PutMapping("/{id}")

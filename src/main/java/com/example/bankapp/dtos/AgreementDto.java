@@ -17,6 +17,5 @@ public class AgreementDto {
     private int interestRate;
     private int status;
     private double sum;
-    private Date createdAt;
-    private Date updatedAt;
+
 }

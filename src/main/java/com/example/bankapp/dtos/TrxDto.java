@@ -7,11 +7,10 @@ import java.util.Date;
 @Getter
 @Setter
 public class TrxDto {
-    private Long id;
-    private int accountId;
+  //  private Long id;
+    private Long accountId;
     private int type;
-    private int status;
+  //  private int status;
     private double amount;
     private String description;
-    private Date createdAt;
 }

@@ -15,6 +15,5 @@ public class ClientDto {
     private String email;
     private String address;
     private String phone;
-    private Date createdAt;
-    private Date updatedAt;
+
 }

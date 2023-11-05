@@ -53,8 +53,7 @@ public class ClientServiceImpl implements ClientService {
         if (optClientEntity.isPresent()) {
             return clientMapper.toDto(optClientEntity.get());
         } else {
-            log.info("Client id ={} is not found", id);
-            throw new NotFoundException("Client not found");
+            throw new NotFoundException("Client" + id + " is not found");
         }
     }
 
@@ -62,8 +61,7 @@ public class ClientServiceImpl implements ClientService {
     public List<ClientDto> findByLastName(String lastName) {
         List<ClientEntity> clientEntities = clientRepository.findByLastName(lastName);
         if (clientEntities.isEmpty()) {
-            log.info("Client with lastName ={} is not found", lastName);
-            throw new NotFoundException("Client with this with lastName not found");
+            throw new NotFoundException("Client with with lastName"+ lastName+ " is not found");
         } else {
             return clientEntities.stream()
                     .map(clientMapper::toDto)
@@ -79,8 +77,7 @@ public class ClientServiceImpl implements ClientService {
             log.info("Created and saved client with ID= {}", savedClient.getId());
             return clientMapper.toDto(savedClient);
         } else {
-            log.info("This email = {} is already occupied", clientDto.getEmail());
-            throw new ValidationException("Client cannot be created, email is occupied");
+            throw new ValidationException("Client cannot be created, email "+ clientDto.getEmail()+ " is occupied");
         }
     }
 
@@ -94,9 +91,7 @@ public class ClientServiceImpl implements ClientService {
             log.info("Client with ID {} is updated", id);
             return clientEntity;
         }
-
-        log.info("This id = {} is not found", id);
-        throw new NotFoundException("Client cannot be updated, id is not found");
+        throw new NotFoundException("Client " + id + " cannot be updated, id is not found");
 
     }
 
@@ -107,8 +102,7 @@ public class ClientServiceImpl implements ClientService {
             clientRepository.deleteById(id);
             return;
         }
-        log.info("Client id ={} is not found", id);
-        throw new NotFoundException("Client not found");
+        throw new NotFoundException("Client " + id +" is not found");
     }
 
 }
