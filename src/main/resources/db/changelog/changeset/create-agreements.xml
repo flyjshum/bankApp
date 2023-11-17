@@ -8,7 +8,6 @@
       <column name="id" type="bigint" autoIncrement="true">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-
       <column name="client_id" type="bigint">
         <constraints nullable="false" foreignKeyName="fk_clients_agreements" references="clients(id)"/>
       </column>
@@ -25,7 +24,8 @@
         <constraints nullable="false" foreignKeyName="fk_manager_agreements" references="managers(id)"/>
       </column>
 
-      <column name="interest_rate" type="int">
+
+      <column name="interest_rate" type="double">
         <constraints nullable="false"/>
       </column>
 
@@ -33,7 +33,7 @@
         <constraints nullable="false"/>
       </column>
 
-      <column name="sum" type="double">
+      <column name="sum" type="decimal(38, 2)">
         <constraints nullable="false"/>
       </column>
 

@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Date;
 
@@ -28,10 +29,13 @@ public class ProductEntity {
     private int currencyCode;
 
     @Column(name = "interest_rate")
-    private int interestRate;
+    private double interestRate;
 
-    @Column(name = "limit")
-    private double limit;
+    @Column(name = "limit_min")
+    private BigDecimal limitMin;
+
+    @Column(name = "limit_max")
+    private BigDecimal limitMax;
 
     @CreationTimestamp
     @Column (name ="created_at")

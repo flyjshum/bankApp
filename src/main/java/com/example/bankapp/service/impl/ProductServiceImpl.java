@@ -28,6 +28,14 @@ public class ProductServiceImpl implements ProductService {
     private final ProductMapper productMapper;
 
     @Override
+    public boolean validateOptProduct(Optional<ProductEntity> optProductEntity) {
+
+        if (optProductEntity.isEmpty()) {
+            throw new ValidationException("No such product");
+        }
+        return true;
+    }
+    @Override
     public List<ProductDto> getAll() {
 
         return productRepository.findAll().stream()
@@ -60,7 +68,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto createProduct(ProductDto clientDto) {
         ProductEntity savedClient = productRepository.save(productMapper.toEntity(clientDto));
-        log.info("Created and saved client with ID= {}", savedClient.getId());
+        log.info("Created and saved product with ID= {}", savedClient.getId());
         return productMapper.toDto(savedClient);
     }
 

@@ -23,11 +23,15 @@
         <constraints nullable="false"/>
       </column>
 
-      <column name="interest_rate" type="int">
+      <column name="interest_rate" type="double">
         <constraints nullable="false"/>
       </column>
 
-      <column name="limit" type="double">
+      <column name="limit_min" type="decimal(38, 2)">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="limit_max" type="decimal(38, 2)">
         <constraints nullable="false"/>
       </column>
 

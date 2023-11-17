@@ -16,6 +16,7 @@ public interface ProductMapper {
     @Mapping(target ="name", ignore = true)
     @Mapping(target ="currencyCode", ignore = true)
     @Mapping(target ="interestRate", ignore = true)
-    @Mapping(target ="limit", ignore = true)
+    @Mapping(target ="limitMin", ignore = true)
+    @Mapping(target ="limitMax", ignore = true)
     void updateEntity(@MappingTarget ProductEntity productEntity, ProductDto productDto);
 }

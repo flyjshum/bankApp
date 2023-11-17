@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.time.Instant;
 
@@ -29,13 +30,10 @@ public class TrxEntity {
     private int status;
 
     @Column (name ="amount")
-    private double amount;
-
-    @Column (name ="name")
-    private String name;
+    private BigDecimal amount;
 
     @Column (name ="description")
-    private int description;
+    private String description;
 
     @CreationTimestamp
     @Column (name ="created_at")

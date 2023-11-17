@@ -7,16 +7,10 @@ import java.util.List;
 
 public interface TrxService {
     List<TrxDto> getAll();
-
     TrxDto getById(Long id);
     List<TrxDto> findByAccountId(Long id);
     List<TrxDto> findByStatus(int status);
-
     TrxDto createTrx(TrxDto trxDto);
-
     TrxEntity updateTrx(Long id, TrxDto trxDto);
-
     void deleteTrx(Long id);
-
-
 }

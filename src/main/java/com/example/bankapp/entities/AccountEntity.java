@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.time.Instant;
 
@@ -18,27 +19,17 @@ public class AccountEntity {
     @Column(name="id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id")
-    private ClientEntity client;
-
-    //@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    //private AgreementEntity agreement;
-
-    @Column (name ="name")
-    private String name;
-
-    @Column (name ="type")
-    private int type;
+   @Column (name ="name")
+   private String name;
 
     @Column (name ="status")
     private int status;
 
     @Column (name ="balance")
-    private double balance;
+    private BigDecimal balance;
 
-    @Column (name ="currency_code")
-    private int currencyCode;
+//    @Column (name ="currency_code")
+//    private int currencyCode;
 
     @CreationTimestamp
     @Column (name ="created_at")

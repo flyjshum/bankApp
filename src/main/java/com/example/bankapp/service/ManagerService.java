@@ -9,13 +9,9 @@ import java.util.List;
 public interface ManagerService {
     List<ManagerDto> getAll();
     ManagerDto getById(Long id);
-
     List<ManagerDto> findByLastName(String lastName);
-
     ManagerDto createManager(ManagerDto managerDto);
-
     ManagerEntity updateManager(Long id, ManagerDto managerDto);
-
     void deleteManager(Long id);
 
 }

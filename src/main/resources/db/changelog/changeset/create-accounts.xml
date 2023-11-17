@@ -10,15 +10,7 @@
         <constraints primaryKey="true" nullable="false"/>
       </column>
 
-      <column name="client_id" type="bigint">
-        <constraints nullable="false" foreignKeyName="fk_accounts_clients" references="clients(id)"/>
-      </column>
-
       <column name="name" type="VARCHAR(100)">
-        <constraints nullable="false"/>
-      </column>
-
-      <column name="type" type="int">
         <constraints nullable="false"/>
       </column>
 
@@ -26,11 +18,7 @@
         <constraints nullable="false"/>
       </column>
 
-      <column name="balance" type="double">
-        <constraints nullable="false"/>
-      </column>
-
-      <column name="currency_code" type="int">
+      <column name="balance" type="decimal(38, 2)">
         <constraints nullable="false"/>
       </column>
 

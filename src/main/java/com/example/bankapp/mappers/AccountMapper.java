@@ -15,8 +15,6 @@ public interface AccountMapper {
     AccountEntity toEntity(AccountDto accountDto);
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target ="id", ignore = true)
-    @Mapping(target ="client", ignore = true)
     @Mapping(target ="balance", ignore = true)
-    @Mapping(target ="currencyCode", ignore = true)
     void updateEntity(@MappingTarget AccountEntity accountEntity, AccountDto accountDto);
 }

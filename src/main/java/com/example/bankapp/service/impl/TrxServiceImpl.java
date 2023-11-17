@@ -1,15 +1,10 @@
 package com.example.bankapp.service.impl;
 
-import com.example.bankapp.dtos.AccountAgreementDto;
-import com.example.bankapp.dtos.AccountDto;
-import com.example.bankapp.dtos.ClientDto;
 import com.example.bankapp.dtos.TrxDto;
 import com.example.bankapp.entities.AccountEntity;
 import com.example.bankapp.entities.AgreementEntity;
-import com.example.bankapp.entities.ClientEntity;
 import com.example.bankapp.entities.TrxEntity;
 import com.example.bankapp.exception.NotFoundException;
-import com.example.bankapp.exception.ValidationException;
 import com.example.bankapp.mappers.AccountMapper;
 import com.example.bankapp.mappers.TrxMapper;
 import com.example.bankapp.repository.AccountRepository;
@@ -20,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,21 +78,22 @@ public class TrxServiceImpl implements TrxService {
         TrxEntity trxEntity = trxMapper.toEntity(trxDto);
         Optional<AccountEntity> optAccountEntity = accountRepository.findById(trxDto.getAccountId());
         AccountEntity accountEntity = optAccountEntity.get();
-        double balanceBeforeTrx = accountEntity.getBalance();
+        BigDecimal balanceBeforeTrx = accountEntity.getBalance();
 
         //если операция дебитовая  тип 1
         if (trxEntity.getType() == 1) {
-            accountEntity.setBalance(balanceBeforeTrx + trxDto.getAmount());
-        }  else  {
-        //если операция кредитовая  тип 2
-            accountEntity.setBalance(balanceBeforeTrx - trxDto.getAmount());
+            accountEntity.setBalance(balanceBeforeTrx.add(trxDto.getAmount()));
+        } else {
+            //если операция кредитовая  тип 2
+            accountEntity.setBalance(balanceBeforeTrx.subtract(trxDto.getAmount()));
         }
         trxEntity.setAccount(accountEntity);
 
         AccountEntity savedAccountEntity = accountRepository.saveAndFlush(accountEntity);
-        TrxEntity savedTrx = trxRepository.save(trxMapper.toEntity(trxDto));
+        TrxEntity savedTrx = trxRepository.save(trxEntity);
         log.info("Created and saved Trx with ID= {}", savedTrx.getId());
         return trxMapper.toDto(savedTrx);
+
     }
 
     @Override
@@ -117,7 +114,10 @@ public class TrxServiceImpl implements TrxService {
     public void deleteTrx(Long id) {
         Optional<TrxEntity> optTrxEntity = trxRepository.findById(id);
         if (optTrxEntity.isPresent()) {
-            trxRepository.deleteById(id);
+            // trxRepository.deleteById(id);
+            TrxEntity trxEntity = optTrxEntity.get();
+            trxEntity.setStatus(0);
+            trxRepository.save(trxEntity);
             return;
         }
         throw new NotFoundException("Trx" + id + "is " +
@@ -125,4 +125,3 @@ public class TrxServiceImpl implements TrxService {
     }
 
 }
-

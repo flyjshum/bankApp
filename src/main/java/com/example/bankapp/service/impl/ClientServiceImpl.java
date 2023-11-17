@@ -33,15 +33,6 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public List<ClientDto> getAll() {
 
-        //List<ClientDto> clientDtos = new ArrayList<>();
-        // for (int i = 0; i < clientEntities.size(); i++) {
-        // ClientDto clientDto = clientMapper.toDto(clientEntities.get(i));
-        //  clientDtos.add(clientDto);
-        // }
-        //   for (ClientEntity entity : clientEntities) {
-        //      clientDtos.add(clientMapper.toDto(entity));
-        //  }
-
         return clientRepository.findAll().stream()
                 .map(clientMapper::toDto)
                 .toList();
@@ -53,7 +44,7 @@ public class ClientServiceImpl implements ClientService {
         if (optClientEntity.isPresent()) {
             return clientMapper.toDto(optClientEntity.get());
         } else {
-            throw new NotFoundException("Client" + id + " is not found");
+            throw new NotFoundException("Client " + id + " is not found");
         }
     }
 
@@ -61,7 +52,7 @@ public class ClientServiceImpl implements ClientService {
     public List<ClientDto> findByLastName(String lastName) {
         List<ClientEntity> clientEntities = clientRepository.findByLastName(lastName);
         if (clientEntities.isEmpty()) {
-            throw new NotFoundException("Client with with lastName"+ lastName+ " is not found");
+            throw new NotFoundException("Client with with lastName" + lastName + " is not found");
         } else {
             return clientEntities.stream()
                     .map(clientMapper::toDto)
@@ -77,7 +68,7 @@ public class ClientServiceImpl implements ClientService {
             log.info("Created and saved client with ID= {}", savedClient.getId());
             return clientMapper.toDto(savedClient);
         } else {
-            throw new ValidationException("Client cannot be created, email "+ clientDto.getEmail()+ " is occupied");
+            throw new ValidationException("Client cannot be created, email " + clientDto.getEmail() + " is occupied");
         }
     }
 
@@ -99,14 +90,17 @@ public class ClientServiceImpl implements ClientService {
     public void deleteClient(Long id) {
         Optional<ClientEntity> optClientEntity = clientRepository.findById(id);
         if (optClientEntity.isPresent()) {
-            clientRepository.deleteById(id);
+            ClientEntity clientEntity = optClientEntity.get();
+            clientEntity.setStatus(0);
+            clientRepository.save(clientEntity);
+
+            //   clientRepository.deleteById(id);
             return;
         }
-        throw new NotFoundException("Client " + id +" is not found");
+        throw new NotFoundException("Client " + id + " is not found");
     }
 
 }
-
 
 
 

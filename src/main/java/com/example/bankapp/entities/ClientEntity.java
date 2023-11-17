@@ -20,8 +20,8 @@ public class ClientEntity {
     @Column(name = "id")
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "client", orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<AccountEntity> accounts;
+   // @OneToMany(cascade = CascadeType.ALL, mappedBy = "client", orphanRemoval = true, fetch = FetchType.LAZY)
+    //private List<AccountEntity> accounts;
 
     @Column(name = "status")
     private int status;

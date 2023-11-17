@@ -9,6 +9,10 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface AgreementMapper {
     // @Mapping(source = "firstName", target = "n")
+    @Mapping(target = "clientId", source = "entity.client.id")
+    @Mapping(target = "accountId", source = "entity.account.id")
+    @Mapping(target = "productId", source = "entity.product.id")
+    @Mapping(target = "managerId", source = "entity.manager.id")
     AgreementDto toDto(AgreementEntity entity);
     AgreementEntity toEntity(AgreementDto agreementDto);
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

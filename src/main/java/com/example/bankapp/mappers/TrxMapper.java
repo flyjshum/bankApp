@@ -8,7 +8,9 @@ import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface TrxMapper {
+    @Mapping(target = "accountId", source = "entity.account.id")
     TrxDto toDto(TrxEntity entity);
+    @Mapping(target ="id", ignore = true)
     TrxEntity toEntity(TrxDto trxDto);
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target ="id", ignore = true)

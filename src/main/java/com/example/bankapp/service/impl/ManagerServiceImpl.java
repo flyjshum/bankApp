@@ -58,7 +58,7 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public ManagerDto createManager(ManagerDto managerDto) {
         ManagerEntity savedManager = managerRepository.save(managerMapper.toEntity(managerDto));
-        log.info("Created and saved client with ID= {}", savedManager.getId());
+        log.info("Created and saved manager with ID= {}", savedManager.getId());
         return managerMapper.toDto(savedManager);
     }
 

@@ -19,7 +19,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
         @ExceptionHandler({ValidationException.class})
         public ResponseEntity<Object> handleEntityValidationException(Exception ex) {
-            log.error("Error 404 {}", ex.getMessage());
+            log.error("Error 400 {}", ex.getMessage());
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
 

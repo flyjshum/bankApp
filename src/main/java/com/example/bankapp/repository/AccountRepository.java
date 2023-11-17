@@ -13,5 +13,5 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
     Optional<AccountEntity> findById(Long id);
 
     // @Query(value = "SELECT ce FROM ClientEntity ce where ce.email=:email")
-    Optional<AccountEntity> getByClientId(Long id);
+   // Optional<AccountEntity> getByClientId(Long id);
 }
