@@ -1,5 +1,6 @@
 package com.example.bankapp.entities;
 
+import com.example.bankapp.enums.Status;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,8 +25,9 @@ public class ManagerEntity {
     @Column(name = "last_name")
     private String lastName;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private int status;
+    private Status status;
 
     @CreationTimestamp
     @Column (name ="created_at")
@@ -34,4 +36,9 @@ public class ManagerEntity {
     @UpdateTimestamp
     @Column (name ="updated_at")
     private Date updatedAt;
+
+    @Transient
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 }

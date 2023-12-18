@@ -1,12 +1,14 @@
 package com.example.bankapp.entities;
 
+import com.example.bankapp.enums.Status;
+import com.example.bankapp.enums.TrxType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.time.Instant;
 
 @Getter
@@ -23,12 +25,15 @@ public class TrxEntity {
     @JoinColumn(name = "account_id")
     private AccountEntity account;
 
+    @Enumerated(EnumType.STRING)
     @Column (name ="type")
-    private int type;
+    private TrxType type;
 
+    @Enumerated(EnumType.STRING)
     @Column (name ="status")
-    private int status;
+    private Status status;
 
+    @PositiveOrZero(message = "Amount of trx must be greater than 0!")
     @Column (name ="amount")
     private BigDecimal amount;
 

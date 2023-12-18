@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,7 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER','ROLE_USER')")
     @Operation(summary = "Получить список всех продуктов")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Продукты найдены",
@@ -39,6 +40,8 @@ public class ProductController {
         List<ProductDto> products = productService.getAll();
         return products;
     }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER','ROLE_USER')")
     @Operation(summary = "Получить продукты по названию")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Продукты найдены",
@@ -52,6 +55,8 @@ public class ProductController {
     public List<ProductDto> getByName(@Parameter(description = "Название продуктов, по которому ведется поиск", example = "Вклад пенсионный") @RequestParam String name) {
         return productService.findByName(name);
     }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER','ROLE_USER')")
     @Operation(summary = "Получить продукт по id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Продукт найден",
@@ -66,6 +71,7 @@ public class ProductController {
         return productService.getById(id);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')")
     @Operation(summary = "Создать запись о новом продукте")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Продукт создан",
@@ -80,6 +86,7 @@ public class ProductController {
         return productService.createProduct(productDto);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')")
     @Operation(summary = "Обновить данные продукта")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Данные продукта обновлены",
@@ -94,6 +101,7 @@ public class ProductController {
         return productService.updateProduct(id, productDto);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')")
     @Operation(summary = "Удалить данные о продукте по id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Данные о продукте удалены",

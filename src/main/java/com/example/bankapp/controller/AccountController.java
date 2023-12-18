@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class AccountController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Счета не найдены",
                     content = @Content)})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')")
     @GetMapping("/")
     public List<AccountDto> getAll() {
         List<AccountDto> accounts = accountService.getAll();
@@ -48,8 +50,9 @@ public class AccountController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Счет не найден",
                     content = @Content)})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER','ROLE_USER')")
     @GetMapping("/search")
-    public List<AccountDto> getByName(@Parameter(description = "Название счета, который надо удалить", example = "2") @RequestParam String name) {
+    public List<AccountDto> getByName(@Parameter(description = "Название счета", example = "2") @RequestParam String name) {
         return accountService.findByName(name);
     }
 
@@ -62,6 +65,7 @@ public class AccountController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Счет не найден",
                     content = @Content)})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER','ROLE_USER')")
     @GetMapping("/{id}")
     public AccountDto getById(@Parameter(description = "id счета, по которому ведется поиск", example = "2") @PathVariable Long id) {
         return accountService.getById(id);
@@ -76,6 +80,7 @@ public class AccountController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Аккаунт не добавлен",
                     content = @Content)})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')")
     @PostMapping("/")
     public AccountEntity add(@RequestBody CreateAgreementRequest accountAgreementDto) {
         return accountService.createAccount();
@@ -90,6 +95,7 @@ public class AccountController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Данные счета не обновлены",
                     content = @Content)})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')")
     @PutMapping("/{id}")
     public AccountEntity update(@Parameter(description = "id счета, который надо обновить", example = "2") @PathVariable Long id, @RequestBody AccountDto accountDto) {
 
@@ -105,6 +111,7 @@ public class AccountController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Данные счета не удалены",
                     content = @Content)})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')")
     @DeleteMapping("/{id}")
     public void delete(@Parameter(description = "id счета, который надо удалить", example = "2") @PathVariable Long id) {
         accountService.deleteAccount(id);

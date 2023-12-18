@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ManagerController {
     private final ManagerService managerService;
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')")
     @Operation(summary = "Получить список всех менеджеров")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Менеджеры найдены",
@@ -39,6 +40,7 @@ public class ManagerController {
         return managers;
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')")
     @Operation(summary = "Получить менеджеров по фамилии")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Менеджеры найден",
@@ -54,6 +56,7 @@ public class ManagerController {
         return managerService.findByLastName(lastName);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')")
     @Operation(summary = "Получить менеджера по id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Менеджер найден",
@@ -68,6 +71,7 @@ public class ManagerController {
         return managerService.getById(id);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')")
     @Operation(summary = "Создать запись о новом менеджере")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Менеджер создан",
@@ -82,6 +86,7 @@ public class ManagerController {
         return managerService.createManager(managerDto);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')")
     @Operation(summary = "Обновить данные менеджера")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Данные менеджера обновлены",
@@ -96,6 +101,7 @@ public class ManagerController {
         return managerService.updateManager(id, managerDto);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Operation(summary = "Удалить данные о менеджере по id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Данные менеджера удалены",

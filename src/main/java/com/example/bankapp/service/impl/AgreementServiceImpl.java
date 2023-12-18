@@ -12,9 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+
+import static com.example.bankapp.enums.Status.ACTIVE;
+import static com.example.bankapp.enums.Status.INACTIVE;
 
 @Service
 @RequiredArgsConstructor
@@ -56,6 +58,18 @@ public class AgreementServiceImpl implements AgreementService {
         if (agreementEntities.isEmpty()) {
             log.info("There is no Agreement for client id ={}", id);
             throw new NotFoundException("Agreement for client id doesn't exist");
+        } else {
+            return agreementEntities.stream()
+                    .map(agreementMapper::toDto)
+                    .toList();
+        }
+    }
+    @Override
+    public List<AgreementDto> findAllActive() {
+        List<AgreementEntity> agreementEntities = agreementRepository.findByStatus(1);
+        if (agreementEntities.isEmpty()) {
+            log.info("There is no active Agreements");
+            throw new NotFoundException("There is no active Agreements");
         } else {
             return agreementEntities.stream()
                     .map(agreementMapper::toDto)
@@ -124,7 +138,7 @@ public class AgreementServiceImpl implements AgreementService {
 
         agreementEntity.setInterestRate(productEntity.getInterestRate());
         agreementEntity.setSum(createAgreementRequest.getSum());
-        agreementEntity.setStatus(1);
+        agreementEntity.setStatus(ACTIVE);
         AgreementEntity savedAgreementEntity = agreementRepository.saveAndFlush(agreementEntity);
 
         CreateAgreementResponse createAgreementResponse = new CreateAgreementResponse();
@@ -160,7 +174,7 @@ public class AgreementServiceImpl implements AgreementService {
         Optional<AgreementEntity> optAgreementEntity = agreementRepository.findById(id);
         if (optAgreementEntity.isPresent()) {
             AgreementEntity agreementEntity = optAgreementEntity.get();
-            agreementEntity.setStatus(0);
+            agreementEntity.setStatus(INACTIVE);
             agreementRepository.save(agreementEntity);
             accountService.deleteAccount(agreementEntity.getAccount().getId());
 

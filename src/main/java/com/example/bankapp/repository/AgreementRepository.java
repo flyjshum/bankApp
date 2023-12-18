@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface AgreementRepository extends JpaRepository<AgreementEntity, Long> {
     List<AgreementEntity> findByClientId(Long id);
-
+    List<AgreementEntity> findByStatus(int status);
     Optional<AgreementEntity> findById(Long id);
 
 

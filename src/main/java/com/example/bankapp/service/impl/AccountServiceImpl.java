@@ -5,6 +5,7 @@ import com.example.bankapp.dtos.AccountDto;
 import com.example.bankapp.entities.AccountEntity;
 import com.example.bankapp.entities.ClientEntity;
 import com.example.bankapp.entities.ProductEntity;
+import com.example.bankapp.enums.Status;
 import com.example.bankapp.exception.NotFoundException;
 import com.example.bankapp.mappers.AccountMapper;
 import com.example.bankapp.mappers.AgreementMapper;
@@ -70,7 +71,7 @@ public class AccountServiceImpl implements AccountService {
         AccountEntity accountEntity = new AccountEntity();
         accountEntity.setBalance(new BigDecimal(0));
         accountEntity.setName("Name");//productEntity.getName() + "_" + clientEntity.getId());
-        accountEntity.setStatus(1);
+        accountEntity.setStatus(Status.ACTIVE);
 
         AccountEntity savedAccountEntity = accountRepository.saveAndFlush(accountEntity);
         log.info("Account with ID {} is created ", savedAccountEntity.getId());
@@ -96,7 +97,7 @@ public class AccountServiceImpl implements AccountService {
         Optional<AccountEntity> optAccountEntity = accountRepository.findById(id);
         if (optAccountEntity.isPresent()) {
             AccountEntity accountEntity = optAccountEntity.get();
-            accountEntity.setStatus(0);
+            accountEntity.setStatus(Status.INACTIVE);
             accountRepository.save(accountEntity);
             log.info("Status of account id = {} is changed to inactive or 0", id);
             return;

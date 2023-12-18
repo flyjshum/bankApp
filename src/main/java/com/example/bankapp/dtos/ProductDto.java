@@ -24,5 +24,10 @@ public class ProductDto {
     private BigDecimal limitMin;
     @Schema(description = "Минимальный размер депозита", example = "500000000")
     private BigDecimal limitMax;
+    @Schema(description = "Срок действия договора в месяцах", example = "12")
+    private int depositPeriod;
+    @Schema(description = "Периодичность выплаты процентов в месяцах", example = "12")
+    private int paymentFrequency;
+
 }
 

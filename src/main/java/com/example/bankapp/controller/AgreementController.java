@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class AgreementController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Договоры не найдены",
                     content = @Content)})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')")
     @GetMapping("/")
     public List<AgreementDto> getAll() {
         List<AgreementDto> agreements = agreementService.getAll();
@@ -44,6 +46,7 @@ public class AgreementController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Договоры не найдены",
                     content = @Content)})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')")
     @GetMapping("/search")
     public List<AgreementDto> getByClientId(@Parameter(description = "id клиента, по которому ведется поиск договоров", example = "2") @RequestParam Long id) {
         return agreementService.findByClientId(id);
@@ -58,6 +61,7 @@ public class AgreementController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Договор не создан",
                     content = @Content)})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')")
     @PostMapping("/")
     public CreateAgreementResponse add(@RequestBody CreateAgreementRequest createAgreementRequest) {
         return agreementService.createAgreement(createAgreementRequest);
@@ -72,6 +76,7 @@ public class AgreementController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Данные договора не обновлены",
                     content = @Content)})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')")
     @PutMapping("/{id}")
     public AgreementEntity update(@Parameter(description = "id договора, который надо обновить", example = "2") @PathVariable Long id, @RequestBody AgreementDto agreementDto) {
         return agreementService.updateAgreement(id, agreementDto);
@@ -86,6 +91,7 @@ public class AgreementController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Данные договора не удалены",
                     content = @Content)})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')")
     @DeleteMapping("/{id}")
     public void delete(@Parameter(description = "id договора, который надо удалить", example = "2") @PathVariable Long id) {
         agreementService.deleteAgreement(id);

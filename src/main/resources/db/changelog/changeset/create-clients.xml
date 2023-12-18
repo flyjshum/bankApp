@@ -12,7 +12,7 @@
         <constraints primaryKey="true" nullable="false"/>
       </column>
 
-      <column name="status" type="int">
+      <column name="status" type="ENUM('ACTIVE', 'INACTIVE')">
         <constraints nullable="false"/>
       </column>
 
@@ -45,5 +45,13 @@
 
     </createTable>
 
+  </changeSet>
+
+
+  <changeSet author="root" id="addUniqueConstraint-email">
+    <addUniqueConstraint
+            columnNames="email"
+            constraintName="unique-email"
+            tableName="clients"/>
   </changeSet>
 </databaseChangeLog>

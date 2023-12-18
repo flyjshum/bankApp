@@ -1,10 +1,22 @@
 package com.example.bankapp.entities;
 
+import com.example.bankapp.enums.Status;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import jakarta.validation.constraints.*;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.*;
+
+import static jakarta.persistence.CascadeType.*;
 
 import java.time.Instant;
 import java.util.Date;
@@ -23,8 +35,9 @@ public class ClientEntity {
    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "client", orphanRemoval = true, fetch = FetchType.LAZY)
     //private List<AccountEntity> accounts;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private int status;
+    private Status status;
 
     @Column(name = "first_name")
     private String firstName;
@@ -38,6 +51,7 @@ public class ClientEntity {
     @Column(name = "address")
     private String address;
 
+    @Pattern(regexp = "^(?:\\+\\d{1,3}\\s?)?\\d{1,4}\\s?(\\d{2,3}\\s?)?\\d{3,9}$", message = "Number is not supported!")
     @Column(name = "phone")
     private String phone;
 
@@ -48,4 +62,9 @@ public class ClientEntity {
     @UpdateTimestamp
     @Column (name ="updated_at")
     private Date updatedAt;
+
+    @Transient
+    @OneToOne
+    @JoinColumn(name = "users_id")
+    private UserEntity user;
 }

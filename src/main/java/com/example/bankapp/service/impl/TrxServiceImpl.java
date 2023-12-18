@@ -4,6 +4,8 @@ import com.example.bankapp.dtos.TrxDto;
 import com.example.bankapp.entities.AccountEntity;
 import com.example.bankapp.entities.AgreementEntity;
 import com.example.bankapp.entities.TrxEntity;
+import com.example.bankapp.enums.Status;
+import com.example.bankapp.enums.TrxType;
 import com.example.bankapp.exception.NotFoundException;
 import com.example.bankapp.mappers.AccountMapper;
 import com.example.bankapp.mappers.TrxMapper;
@@ -81,11 +83,16 @@ public class TrxServiceImpl implements TrxService {
         BigDecimal balanceBeforeTrx = accountEntity.getBalance();
 
         //если операция дебитовая  тип 1
-        if (trxEntity.getType() == 1) {
+        if (trxEntity.getType() == TrxType.DEBIT) {
             accountEntity.setBalance(balanceBeforeTrx.add(trxDto.getAmount()));
         } else {
             //если операция кредитовая  тип 2
-            accountEntity.setBalance(balanceBeforeTrx.subtract(trxDto.getAmount()));
+            //проверка достаточен ли баланс для проведения операции списания
+
+            BigDecimal amountTrx = trxDto.getAmount();
+            if (amountTrx.compareTo(balanceBeforeTrx)  <= 0 ) {
+                accountEntity.setBalance(balanceBeforeTrx.subtract(trxDto.getAmount()));
+            }
         }
         trxEntity.setAccount(accountEntity);
 
@@ -116,7 +123,7 @@ public class TrxServiceImpl implements TrxService {
         if (optTrxEntity.isPresent()) {
             // trxRepository.deleteById(id);
             TrxEntity trxEntity = optTrxEntity.get();
-            trxEntity.setStatus(0);
+            trxEntity.setStatus(Status.INACTIVE);
             trxRepository.save(trxEntity);
             return;
         }

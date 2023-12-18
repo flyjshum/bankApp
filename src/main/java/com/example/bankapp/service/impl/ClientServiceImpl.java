@@ -3,6 +3,7 @@ package com.example.bankapp.service.impl;
 import com.example.bankapp.dtos.ClientDto;
 import com.example.bankapp.entities.AccountEntity;
 import com.example.bankapp.entities.ClientEntity;
+import com.example.bankapp.enums.Status;
 import com.example.bankapp.exception.NotFoundException;
 import com.example.bankapp.exception.ValidationException;
 import com.example.bankapp.mappers.ClientMapper;
@@ -91,7 +92,7 @@ public class ClientServiceImpl implements ClientService {
         Optional<ClientEntity> optClientEntity = clientRepository.findById(id);
         if (optClientEntity.isPresent()) {
             ClientEntity clientEntity = optClientEntity.get();
-            clientEntity.setStatus(0);
+            clientEntity.setStatus(Status.INACTIVE);
             clientRepository.save(clientEntity);
 
             //   clientRepository.deleteById(id);

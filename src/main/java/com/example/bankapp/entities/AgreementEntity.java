@@ -1,5 +1,6 @@
 package com.example.bankapp.entities;
 
+import com.example.bankapp.enums.Status;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,8 +45,9 @@ public class AgreementEntity {
     @Column(name = "interest_rate")
     private double interestRate;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private int status;
+    private Status status;
 
     @Column(name = "sum")
     private BigDecimal sum;
@@ -53,6 +55,10 @@ public class AgreementEntity {
     @CreationTimestamp
     @Column(name = "created_at")
     private Instant createdAt;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "maturity_date")
+    private Instant maturityDate;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
